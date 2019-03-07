@@ -1,0 +1,28 @@
+galaxy_info:
+  role_name: xcode
+  author: ispasov
+  description: Ansible role that installs Xcode
+  company: MacStadium, Inc.
+
+  license: license (GPLv3)
+
+  min_ansible_version: 2.6
+
+  platforms:
+    - name: MacOSX
+      versions:
+        - '10.12'
+        - '10.13'
+        - '10.14'
+
+  galaxy_tags:
+    - 'mac'
+    - 'osx'
+    - 'highsierra'
+    - 'sierra'
+    - 'mojave'
+    - 'xcode'
+    - 'tools'
+    - 'ci'
+
+dependencies: []

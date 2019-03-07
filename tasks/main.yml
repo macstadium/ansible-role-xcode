@@ -1,0 +1,40 @@
+- name: Check if Xcode is installed
+  command: mdfind "kMDItemCFBundleIdentifier == 'com.apple.dt.Xcode'"
+  register: xcode_app
+  changed_when: false
+
+- name: Register xcode_installed
+  set_fact:
+    xcode_installed: "{{ xcode_app.stdout.find('Xcode') != -1 }}"
+
+- name: Install Xcode
+  block:
+    - name: check that the xcode archive is valid
+      command: >
+        pkgutil --check-signature {{ xcode_xip_location }} |
+        grep \"Status: signed Apple Software\"
+
+    - name: Install Xcode from XIP file Location
+      command: open -FWga "Archive Utility" --args {{ xcode_xip_location }}
+
+    - name: Move Xcode To Applications
+      shell: mv {{ xcode_xip_location | dirname }}/Xcode*.app /Applications/
+
+    - name: Accept License Agreement
+      command: "{{ xcode_build }} -license accept"
+      become: true
+
+    - name: Run Xcode first launch
+      command: "{{ xcode_build }} -runFirstLaunch"
+      become: true
+      when: xcode_major_version | int >= 9
+
+    - name: Xcode 8 packages
+      include: xcode8_packages.yml
+      when: xcode_major_version | int == 8
+  when: not xcode_installed
+
+- name: Enable Developer Mode
+  developer_mode:
+    state: enable
+  become: true

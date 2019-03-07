@@ -1,0 +1,26 @@
+- name: Install mobile device package
+  command: >
+    installer -pkg {{ xcode_packages_location }}/MobileDevice.pkg -target /
+  changed_when: false
+  become: true
+
+- name: Install mobile device development package
+  command: >
+    installer
+    -pkg {{ xcode_packages_location }}/MobileDeviceDevelopment.pkg -target /
+  changed_when: false
+  become: true
+
+- name: Install Xcode System Resources package
+  command: >
+    installer
+    -pkg {{ xcode_packages_location }}/XcodeSystemResources.pkg -target /
+  changed_when: false
+  become: true
+
+- name: Install additional xcode components
+  command: >
+    installer
+    -pkg {{ xcode_packages_location }}/XcodeSystemResources.pkg -target /
+  changed_when: false
+  become: true
