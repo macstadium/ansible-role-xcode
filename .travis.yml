@@ -13,3 +13,6 @@ script:
     - cd tests
     - ansible-lint site.yml
     - ansible-playbook site.yml --syntax-check
+
+notifications:
+  webhooks: https://galaxy.ansible.com/api/v1/notifications/
