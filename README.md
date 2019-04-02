@@ -1,6 +1,8 @@
 # Ansible Role: Xcode
 
 ![GPL-3.0 licensed][badge-license]
+[![Build Status](https://travis-ci.org/macstadium/ansible-role-xcode.svg?branch=master)](https://travis-ci.org/macstadium/ansible-role-xcode)
+
 
 Installs [Xcode][xcode] on MacOS according to supplied variables.
 
