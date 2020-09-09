@@ -15,7 +15,7 @@
         grep \"Status: signed Apple Software\"
 
     - name: Install Xcode from XIP file Location
-      command: open -FWga "Archive Utility" --args {{ xcode_xip_location }}
+      command: xip --expand {{ xcode_xip_location }}
 
     - name: Move Xcode To Applications
       shell: mv {{ xcode_xip_location | dirname }}/Xcode*.app /Applications/
