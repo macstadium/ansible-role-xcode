@@ -1,5 +1,5 @@
 - name: Check if Xcode is installed
-  command: mdfind "kMDItemCFBundleIdentifier == 'com.apple.dt.Xcode'"
+  command: mdfind -onlyin /Applications "kMDItemCFBundleIdentifier == 'com.apple.dt.Xcode'"
   register: xcode_app
   changed_when: false
 
