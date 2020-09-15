@@ -39,8 +39,10 @@
         path: /Applications/Xcode.app
         state: absent
 
-    - name: Move Xcode To Applications
-      shell: mv {{ xcode_xip_location | dirname }}/Xcode*.app /Applications/
+    - name: Install Xcode from XIP file Location
+      command: xip --expand {{ xcode_xip_location }}
+      args:
+        chdir: /Applications
 
     - name: Accept License Agreement
       command: "{{ xcode_build }} -license accept"
