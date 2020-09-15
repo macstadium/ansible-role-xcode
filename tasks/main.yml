@@ -43,6 +43,8 @@
       command: xip --expand {{ xcode_xip_location }}
       args:
         chdir: /Applications
+      poll: 5
+      async: 800 # Prevent SSH connections timing out waiting for extraction
 
     - name: Accept License Agreement
       command: "{{ xcode_build }} -license accept"
