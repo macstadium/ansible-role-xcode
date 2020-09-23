@@ -18,7 +18,7 @@
       command: xip --expand {{ xcode_xip_location }}
 
     - name: Move Xcode To Applications
-      shell: mv {{ xcode_xip_location | dirname }}/Xcode*.app /Applications/
+      shell: mv {{ ansible_env.PWD }}/Xcode*.app /Applications/
 
     - name: Accept License Agreement
       command: "{{ xcode_build }} -license accept"
