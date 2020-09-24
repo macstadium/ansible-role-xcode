@@ -1,11 +1,31 @@
 - name: Check if Xcode is installed
-  command: mdfind "kMDItemCFBundleIdentifier == 'com.apple.dt.Xcode'"
+  command: mdfind -onlyin /Applications "kMDItemCFBundleIdentifier == 'com.apple.dt.Xcode'"
   register: xcode_app
   changed_when: false
 
 - name: Register xcode_installed
   set_fact:
     xcode_installed: "{{ xcode_app.stdout.find('Xcode') != -1 }}"
+
+- name: Get Installed Xcode version
+  shell: xcodebuild -version | head -n1 | cut -d " " -f 2
+  register: xcode_app_output
+  when: xcode_installed
+  changed_when: false
+
+- name: Export Installed Xcode version
+  set_fact:
+    xcode_installed_version: "{{ xcode_app_output.stdout }}"
+  when: xcode_installed
+
+- name: Get Candidate Xcode version
+  shell: echo -n "{{ xcode_xip_location }}" | cut -d "_" -f 2 | sed s/'.xip'//g
+  register: xcode_path_parse
+  changed_when: false
+
+- name: Export Candidate Xcode version
+  set_fact:
+    xcode_target_version: "{{ xcode_path_parse.stdout }}"
 
 - name: Install Xcode
   block:
@@ -14,11 +34,17 @@
         pkgutil --check-signature {{ xcode_xip_location }} |
         grep \"Status: signed Apple Software\"
 
+    - name: Clean up existing Xcode installation
+      file:
+        path: /Applications/Xcode.app
+        state: absent
+
     - name: Install Xcode from XIP file Location
       command: xip --expand {{ xcode_xip_location }}
-
-    - name: Move Xcode To Applications
-      shell: mv {{ xcode_xip_location | dirname }}/Xcode*.app /Applications/
+      args:
+        chdir: /Applications
+      poll: 5
+      async: 800 # Prevent SSH connections timing out waiting for extraction
 
     - name: Accept License Agreement
       command: "{{ xcode_build }} -license accept"
@@ -32,7 +58,7 @@
     - name: Xcode 8 packages
       include: xcode8_packages.yml
       when: xcode_major_version | int == 8
-  when: not xcode_installed
+  when: not xcode_installed or xcode_installed_version is version(xcode_target_version, '!=')
 
 - name: Enable Developer Mode
   developer_mode:
