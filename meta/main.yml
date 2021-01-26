@@ -15,7 +15,6 @@ galaxy_info:
         - '10.13'
         - '10.14'
         - '10.15'
-        - '11'
 
   galaxy_tags:
     - 'mac'
