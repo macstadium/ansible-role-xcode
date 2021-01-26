@@ -37,6 +37,11 @@ The path to the `xcodebuild` tool.
 
 The directory containing all extra Xcode packages to be installed.
 
+
+The installation archive extraction timeout in seconds.
+
+    xcode_xip_extraction_timeout
+
 ## Dependencies
 
 None.
