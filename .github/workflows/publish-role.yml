@@ -1,0 +1,57 @@
+name: Publish role
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+  workflow_dispatch:
+    inputs:
+      shouldPublishImage:
+        description: 'Should publish image to Ansible Galaxy? (yes/no)'
+        required: false
+        default: 'no'
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - name: Install dependencies
+        run: |
+          set -eux
+          
+          pip install ansible
+          pip install yamllint
+          pip install ansible-lint
+          
+      - name: Run yamllint
+        run: yamllint .
+        
+      - name: Run ansible lint
+        working-directory: tests
+        run: ansible-lint site.yml -c ../.ansible-lint
+        
+      - name: Verify syntax
+        working-directory: tests
+        run: ansible-playbook site.yml --syntax-check
+
+  publish:
+    if: github.event.inputs.shouldPublishImage == 'yes' || github.ref == 'refs/heads/master'
+    needs: ci
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: galaxy
+        uses: robertdebock/galaxy-action@1.1.0
+        with:
+          galaxy_api_key: ${{ secrets.GALAXY_API_KEY }}
+          path: macstadium
