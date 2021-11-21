@@ -29,7 +29,7 @@
 
 - name: Install Xcode
   block:
-    - name: check that the xcode archive is valid
+    - name: Check that the Xcode archive is valid
       command: >
         pkgutil --check-signature {{ xcode_xip_location }} |
         grep \"Status: signed Apple Software\"
