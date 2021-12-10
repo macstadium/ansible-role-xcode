@@ -8,7 +8,7 @@
     xcode_installed: "{{ xcode_app.stdout.find('Xcode') != -1 }}"
 
 - name: Get Installed Xcode version
-  shell: xcodebuild -version | head -n1 | cut -d " " -f 2
+  shell: (xcodebuild -version 2> /dev/null || echo "8.0") | head -n1 | cut -d " " -f 2
   register: xcode_app_output
   when: xcode_installed
   changed_when: false
