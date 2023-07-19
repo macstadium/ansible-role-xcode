@@ -3,6 +3,11 @@
 ![GPL-3.0 licensed][badge-license]
 [![Build Status](https://github.com/macstadium/ansible-role-xcode/workflows/Publish%20role/badge.svg?branch=master)](https://github.com/macstadium/ansible-role-xcode/actions?query=workflow%3A%22Publish+role%22+branch%3Amaster)
 
+## Official Support Deprecation
+
+As of July 19, 2023 this is no longer officially supported. The code owner will still maintain and provide long term support, without official guarantee.
+
+## Summary
 
 Installs [Xcode][xcode] on MacOS according to supplied variables.
 
@@ -31,12 +36,11 @@ The major Xcode version to be installed. The way extra packages are installed va
 
     xcode_build: /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild
 
-The path to the `xcodebuild` tool. 
+The path to the `xcodebuild` tool.
 
     xcode_packages_location: /Applications/Xcode.app/Contents/Resources/Packages
 
 The directory containing all extra Xcode packages to be installed.
-
 
 The installation archive extraction timeout in seconds.
 
@@ -63,7 +67,7 @@ None.
 
 This role was created in 2019 by [MacStadium, Inc][macstadium].
 
-#### Maintainer(s)
+### Maintainer(s)
 
 - [Ivan Spasov](https://github.com/ispasov)
 
